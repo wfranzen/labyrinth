@@ -1,0 +1,26 @@
+.obstacle {
+    width: 25px;
+    height: 25px;
+    outline: 1px solid grey;
+    display: inline-block;
+}
+
+.obstacle-start {
+    background-color: green;
+}
+
+.obstacle-finish {
+    background-color: red;
+}
+
+.obstacle-visited {
+    background-color: cyan;
+}
+
+.obstacle-wall {
+    background-color: black;
+}
+
+.obstacle-backwards {
+    background-color: blue;
+}
