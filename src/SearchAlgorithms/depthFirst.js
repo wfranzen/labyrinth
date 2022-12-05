@@ -1,49 +1,53 @@
 export function depthFirst(labyrinth, startObstacle, finishObstacle) {
+
     const visitedObstaclesOrder = [];
-    const unvisitedObstacles = getAllObstacles(labyrinth);
-    while (unvisitedObstacles.length > 0) {
-        const nextObstacle = unvisitedObstacles.shift();
+    const toBeVisitedOrder = [startObstacle];
+    while (toBeVisitedOrder.length > 0) {
+
+        
+        const nextObstacle = toBeVisitedOrder.pop();
+        
         if (nextObstacle.isWall) continue;
         nextObstacle.isVisited = true;
+        
+        for (const neighbor of getUnvisitedNeighbors(nextObstacle, labyrinth)) {
+            toBeVisitedOrder.push(neighbor);
+        }
+
         visitedObstaclesOrder.push(nextObstacle);
         if (nextObstacle === finishObstacle) return visitedObstaclesOrder;
-        updateUnvisitedNeighbors(nextObstacle, labyrinth);
-    }
-}
-
-function updateUnvisitedNeighbors(obstacle, labyrinth) {
-    const unvisitedNeighbors = getUnvisitedNeighbors(obstacle, labyrinth);
-    for (const neighbor of unvisitedNeighbors) {
-        neighbor.previousObstacle = obstacle;
     }
 }
 
 function getUnvisitedNeighbors(obstacle, labyrinth) {
+
     const neighbors = [];
     const {row, col} = obstacle;
     if (row > 0) neighbors.push(labyrinth[row - 1][col]);
     if (col > 0) neighbors.push(labyrinth[row][col - 1]);
     if (row < labyrinth.length - 1) neighbors.push(labyrinth[row + 1][col]);
     if (col < labyrinth[0].length - 1) neighbors.push(labyrinth[row][col + 1]);
-    return neighbors.filter(neighbor => !neighbor.isVisited);
-}
-
-function getAllObstacles(labyrinth) {
-    const obstacles = [];
-    for (const row of labyrinth) {
-        for (const obstacle of row) {
-            obstacles.push(obstacle);
-        }
+    const testNeighbors = neighbors.filter(neighbor => !neighbor.isVisited);
+    for (const neighbor of testNeighbors) {
+        console.log(neighbor);
+        console.log(neighbor.isVisited);
+        neighbor.previousObstacle = obstacle;
     }
-    return obstacles;
+    return neighbors;
 }
 
 export function getObstaclesShortestPathOrderDFS(finishObstacle) {
     const obstaclesShortestPathOrder = [];
     let currentObstacle = finishObstacle;
+    var count = 0;
     while (currentObstacle !== null) {
+        
         obstaclesShortestPathOrder.unshift(currentObstacle);
         currentObstacle = currentObstacle.previousObstacle;
+        if (count > 100) {
+            break;
+        }
+        count++;
     }
     return obstaclesShortestPathOrder;
 }
