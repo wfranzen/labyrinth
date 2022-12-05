@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import Obstacle from './Obstacle/Obstacle';
-import {breadthFirst, getObstaclesShortestPathOrder} from '../SearchAlgorithms/breadthFirst';
+import {breadthFirst, getObstaclesShortestPathOrderBFS} from '../SearchAlgorithms/breadthFirst';
+import {depthFirst, getObstaclesShortestPathOrderDFS} from '../SearchAlgorithms/depthFirst';
+import {randomWalk, getObstaclesShortestPathOrderRW} from '../SearchAlgorithms/randomWalk';
 
 import './AlgoDrawing.css';
 
-const START_OBSTACLE_ROW = 1;
-const START_OBSTACLE_COL = 1;
+const START_OBSTACLE_ROW = 0;
+const START_OBSTACLE_COL = 0;
 const FINISH_OBSTACLE_ROW = 13;
 const FINISH_OBSTACLE_COL = 13;
 
@@ -71,7 +73,25 @@ export default class AlgoDrawing extends Component {
         const startObstacle = labyrinth[START_OBSTACLE_ROW][START_OBSTACLE_COL];
         const finishObstacle = labyrinth[FINISH_OBSTACLE_ROW][FINISH_OBSTACLE_COL];
         const visitedObstaclesOrder = breadthFirst(labyrinth, startObstacle, finishObstacle);
-        const obstaclesShortestPathOrder = getObstaclesShortestPathOrder(finishObstacle);
+        const obstaclesShortestPathOrder = getObstaclesShortestPathOrderBFS(finishObstacle);
+        this.animateBreadthFirst(visitedObstaclesOrder, obstaclesShortestPathOrder);
+    }
+
+    visualizeDepthFirst() {
+        const {labyrinth} = this.state;
+        const startObstacle = labyrinth[START_OBSTACLE_ROW][START_OBSTACLE_COL];
+        const finishObstacle = labyrinth[FINISH_OBSTACLE_ROW][FINISH_OBSTACLE_COL];
+        const visitedObstaclesOrder = depthFirst(labyrinth, startObstacle, finishObstacle);
+        const obstaclesShortestPathOrder = getObstaclesShortestPathOrderDFS(finishObstacle);
+        this.animateBreadthFirst(visitedObstaclesOrder, obstaclesShortestPathOrder);
+    }
+
+    visualizeRandomWalk() {
+        const {labyrinth} = this.state;
+        const startObstacle = labyrinth[START_OBSTACLE_ROW][START_OBSTACLE_COL];
+        const finishObstacle = labyrinth[FINISH_OBSTACLE_ROW][FINISH_OBSTACLE_COL];
+        const visitedObstaclesOrder = randomWalk(labyrinth, startObstacle, finishObstacle);
+        const obstaclesShortestPathOrder = getObstaclesShortestPathOrderRW(finishObstacle);
         this.animateBreadthFirst(visitedObstaclesOrder, obstaclesShortestPathOrder);
     }
 
@@ -85,6 +105,12 @@ export default class AlgoDrawing extends Component {
                 </button>
                 <button onClick={() => this.visualizeBreadthFirst()}>
                     Search Using Djikstra's
+                </button>
+                <button onClick={() => this.visualizeDepthFirst()}>
+                    Search Using Depth-First
+                </button>
+                <button onClick={() => this.visualizeRandomWalk()}>
+                    Search Using Random Walk
                 </button>
                 <div className="labyrinth"> 
                     {labyrinth.map((row, rowIdx) => {
@@ -135,8 +161,8 @@ const createObstacle = (col, row) => {
     return {
         col,
         row,
-        isStart: row == START_OBSTACLE_ROW && col == START_OBSTACLE_COL,
-        isFinish: row == FINISH_OBSTACLE_ROW && col == FINISH_OBSTACLE_COL,
+        isStart: row === START_OBSTACLE_ROW && col === START_OBSTACLE_COL,
+        isFinish: row === FINISH_OBSTACLE_ROW && col === FINISH_OBSTACLE_COL,
         distance: Infinity,
         isVisited: false,
         isWall: false,

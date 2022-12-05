@@ -1,7 +1,7 @@
 .obstacle {
-    width: 25px;
-    height: 25px;
-    outline: 1px solid grey;
+    width: 30px;
+    height: 30px;
+    outline: 1px solid black;
     display: inline-block;
 }
 
@@ -14,7 +14,7 @@
 }
 
 .obstacle-visited {
-    background-color: cyan;
+    background-color: grey;
 }
 
 .obstacle-wall {
