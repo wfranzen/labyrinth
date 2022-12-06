@@ -81,6 +81,7 @@ export default class AlgoDrawing extends Component {
 
                 const obstacle = visitedObstaclesOrder[i];
                 document.getElementById(`obstacle-${obstacle.row}-${obstacle.col}`).className = 'obstacle obstacle-visited';
+                obstacle.isVisited = true;
             }, 20 * i);
         }
     }
@@ -92,6 +93,7 @@ export default class AlgoDrawing extends Component {
             setTimeout(() => {
                 const obstacle = obstaclesShortestPathOrder[i];
                 document.getElementById(`obstacle-${obstacle.row}-${obstacle.col}`).className = 'obstacle obstacle-backwards';
+                obstacle.isVisited = true;
             }, 40 * i);
         }
     }
@@ -158,6 +160,27 @@ export default class AlgoDrawing extends Component {
         }
     }
 
+    resetBoard() {
+
+        const newLabyrinth = this.state.labyrinth;
+        for (let row = 0; row < LABYRINTH_WIDTH; row++) {
+
+            for (let col = 0; col < LABYRINTH_WIDTH; col++) {
+    
+                newLabyrinth[row][col].isVisited = false;
+                if (document.getElementById(`obstacle-${row}-${col}`).className === 'obstacle obstacle-backwards' 
+                || document.getElementById(`obstacle-${row}-${col}`).className === 'obstacle obstacle-visited') {
+                    document.getElementById(`obstacle-${row}-${col}`).className = 'obstacle obstacle-empty';
+                }
+
+                
+                // newLabyrinth[row][col].className = 'obstacle obstacle-empty';
+            }
+        }
+
+        this.setState({newLabyrinth});
+    }
+
     render() {
         const {labyrinth, mouseIsPressed} = this.state;
 
@@ -180,6 +203,9 @@ export default class AlgoDrawing extends Component {
                 </button>
                 <button onClick={() => this.handleSizeChange(-1)}>
                     Reduce Size
+                </button>
+                <button onClick={() => this.resetBoard()}>
+                    Clear Board
                 </button>
                 <div className="labyrinth"> 
                     {labyrinth.map((row, rowIdx) => {
