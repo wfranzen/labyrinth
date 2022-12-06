@@ -7,7 +7,7 @@ export function breadthFirst(labyrinth, startObstacle, finishObstacle) {
         const closestObstacle = unvisitedObstacles.shift();  // DISTANCE NOT NECESSARY
         if (closestObstacle.isWall) continue;
         if (closestObstacle.distance === Infinity) {
-            console.log('No solution possible.');
+            window.alert("No possible solution.")
             return visitedObstaclesOrder; 
         }
         closestObstacle.isVisited = true;
