@@ -50,7 +50,22 @@ export default class AlgoDrawing extends Component {
         this.setState({mouseIsPressed: false});
     }
 
-    animateBreadthFirst(visitedObstaclesOrder, obstaclesShortestPathOrder) {
+    handleSizeChange(valueChange) {
+
+        if (LABYRINTH_WIDTH === 2 && valueChange === -1) {
+            window.alert("Lower size limit reached.")
+        } else if (LABYRINTH_WIDTH === 23 && valueChange === 1) {
+            window.alert("Upper size limit reached.")
+        } else if (LABYRINTH_WIDTH >= 2) {
+            LABYRINTH_WIDTH = LABYRINTH_WIDTH + valueChange;
+            FINISH_OBSTACLE_COL += valueChange;
+            FINISH_OBSTACLE_ROW += valueChange;
+            const labyrinth = getInitialLabyrinth();
+            this.setState({labyrinth});
+        }
+    }
+
+    animateAlgorithm(visitedObstaclesOrder, obstaclesShortestPathOrder) {
 
         for (let i = 0; i <= visitedObstaclesOrder.length; i++) {
 
@@ -87,7 +102,7 @@ export default class AlgoDrawing extends Component {
         const finishObstacle = labyrinth[FINISH_OBSTACLE_ROW][FINISH_OBSTACLE_COL];
         const visitedObstaclesOrder = breadthFirst(labyrinth, startObstacle, finishObstacle);
         const obstaclesShortestPathOrder = getObstaclesShortestPathOrderBFS(finishObstacle);
-        this.animateBreadthFirst(visitedObstaclesOrder, obstaclesShortestPathOrder);
+        this.animateAlgorithm(visitedObstaclesOrder, obstaclesShortestPathOrder);
     }
 
     visualizeDepthFirst() {
@@ -97,7 +112,7 @@ export default class AlgoDrawing extends Component {
         const finishObstacle = labyrinth[FINISH_OBSTACLE_ROW][FINISH_OBSTACLE_COL];
         const visitedObstaclesOrder = depthFirst(labyrinth, startObstacle, finishObstacle);
         const obstaclesShortestPathOrder = getObstaclesShortestPathOrderDFS(finishObstacle);
-        this.animateBreadthFirst(visitedObstaclesOrder, obstaclesShortestPathOrder);
+        this.animateAlgorithm(visitedObstaclesOrder, obstaclesShortestPathOrder);
     }
 
     visualizeRandomWalk() {
@@ -107,16 +122,26 @@ export default class AlgoDrawing extends Component {
         const finishObstacle = labyrinth[FINISH_OBSTACLE_ROW][FINISH_OBSTACLE_COL];
         const visitedObstaclesOrder = randomWalk(labyrinth, startObstacle, finishObstacle);
         const obstaclesShortestPathOrder = getObstaclesShortestPathOrderRW(finishObstacle);
-        this.animateBreadthFirst(visitedObstaclesOrder, obstaclesShortestPathOrder);
+        this.animateAlgorithm(visitedObstaclesOrder, obstaclesShortestPathOrder);
     }
 
-    handleSizeChange(valueChange) {
-
-        LABYRINTH_WIDTH = LABYRINTH_WIDTH + valueChange;
-        FINISH_OBSTACLE_COL += valueChange;
-        FINISH_OBSTACLE_ROW += valueChange;
-        const labyrinth = getInitialLabyrinth();
-        this.setState({labyrinth});
+    runSelectedAlgorithm(searchAlgo) {
+        
+        // eslint-disable-next-line
+        if (searchAlgo == 1) {
+            this.visualizeBreadthFirst();
+        // eslint-disable-next-line
+        } else if (searchAlgo == 2) {
+            this.visualizeDepthFirst();
+        // eslint-disable-next-line
+        } else if (searchAlgo == 3) {
+            this.visualizeBreadthFirst();
+        // eslint-disable-next-line
+        } else if (searchAlgo == 4) {
+            this.visualizeRandomWalk();
+        } else {
+            console.log(searchAlgo)
+        }
     }
 
     render() {
@@ -124,17 +149,16 @@ export default class AlgoDrawing extends Component {
 
         return (
             <>
-                <button onClick={() => this.visualizeBreadthFirst()}>
-                    Search Using Breadth-First
-                </button>
-                <button onClick={() => this.visualizeBreadthFirst()}>
-                    Search Using Djikstra's
-                </button>
-                <button onClick={() => this.visualizeDepthFirst()}>
-                    Search Using Depth-First
-                </button>
-                <button onClick={() => this.visualizeRandomWalk()}>
-                    Search Using Random Walk
+                <form>
+                    <select id="searchAlgorithm">
+                        <option value="1">Breadth-First</option>
+                        <option value="2">Depth-First</option>
+                        <option value="3">Djikstra's</option>
+                        <option value="4">Random Walk</option>
+                    </select>
+                </form>
+                <button onClick={() => this.runSelectedAlgorithm(document.getElementById("searchAlgorithm").value)}>
+                    Run Selected Algorithm
                 </button>
                 <button onClick={() => this.handleSizeChange(1)}>
                     Increase Size

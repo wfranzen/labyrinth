@@ -33,10 +33,3 @@ export default class Obstacle extends Component {
     }
 
 }
-
-/**
-export const DEFAULT_OBSTACLE = {
-    row: 0,
-    col: 0,
-};
-*/
