@@ -3,6 +3,7 @@ import Obstacle from './Obstacle/Obstacle';
 import {breadthFirst, getObstaclesShortestPathOrderBFS} from '../SearchAlgorithms/breadthFirst';
 import {depthFirst, getObstaclesShortestPathOrderDFS} from '../SearchAlgorithms/depthFirst';
 import {randomWalk, getObstaclesShortestPathOrderRW} from '../SearchAlgorithms/randomWalk';
+import {randomJump, getObstaclesShortestPathOrderRJ} from '../SearchAlgorithms/randomJump';
 
 import './AlgoDrawing.css';
 
@@ -125,6 +126,16 @@ export default class AlgoDrawing extends Component {
         this.animateAlgorithm(visitedObstaclesOrder, obstaclesShortestPathOrder);
     }
 
+    visualizeRandomJump() {
+
+        const {labyrinth} = this.state;
+        const startObstacle = labyrinth[START_OBSTACLE_ROW][START_OBSTACLE_COL];
+        const finishObstacle = labyrinth[FINISH_OBSTACLE_ROW][FINISH_OBSTACLE_COL];
+        const visitedObstaclesOrder = randomJump(labyrinth, startObstacle, finishObstacle);
+        const obstaclesShortestPathOrder = getObstaclesShortestPathOrderRJ(finishObstacle);
+        this.animateAlgorithm(visitedObstaclesOrder, obstaclesShortestPathOrder);
+    }
+
     runSelectedAlgorithm(searchAlgo) {
         
         // eslint-disable-next-line
@@ -139,6 +150,9 @@ export default class AlgoDrawing extends Component {
         // eslint-disable-next-line
         } else if (searchAlgo == 4) {
             this.visualizeRandomWalk();
+        // eslint-disable-next-line
+        } else if (searchAlgo == 5) {
+            this.visualizeRandomJump();
         } else {
             console.log(searchAlgo)
         }
@@ -155,6 +169,7 @@ export default class AlgoDrawing extends Component {
                         <option value="2">Depth-First</option>
                         <option value="3">Djikstra's</option>
                         <option value="4">Random Walk</option>
+                        <option value="5">Random Jump</option>
                     </select>
                 </form>
                 <button onClick={() => this.runSelectedAlgorithm(document.getElementById("searchAlgorithm").value)}>

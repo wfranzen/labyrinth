@@ -1,59 +1,52 @@
 export function randomWalk(labyrinth, startObstacle, finishObstacle) {
+
     const visitedObstaclesOrder = [];
-    startObstacle.distance = 0;  // DISTANCE NOT NECESSARY
-    const unvisitedObstacles = getAllObstacles(labyrinth);
-    while (unvisitedObstacles.length > 0) {
-        sortObstaclesByDistance(unvisitedObstacles);  // DISTANCE NOT NECESSARY
-        shuffleOrder(unvisitedObstacles);
-        const closestObstacle = unvisitedObstacles.shift();  // DISTANCE NOT NECESSARY
-        if (closestObstacle.isWall) continue;
+    const toBeVisitedOrder = [startObstacle];
+    while (toBeVisitedOrder.length > 0) {
 
-        closestObstacle.isVisited = true;
-        visitedObstaclesOrder.push(closestObstacle);
-        if (closestObstacle === finishObstacle) return visitedObstaclesOrder;
-        updateUnvisitedNeighbors(closestObstacle, labyrinth);
-    }
-}
+        shuffleOrder(toBeVisitedOrder);
+        const nextObstacle = toBeVisitedOrder.pop();
+        if (nextObstacle === finishObstacle) return visitedObstaclesOrder;
+        if (nextObstacle.isWall) continue;
+        nextObstacle.isVisited = true;
+        
+        for (const neighbor of getUnvisitedNeighbors(nextObstacle, labyrinth)) {
 
-function sortObstaclesByDistance(unvisitedObstacles) {
-    unvisitedObstacles.sort((obstacleA, obstacleB) => obstacleA.distance - obstacleB.distance);
-}
+            if (toBeVisitedOrder.indexOf(neighbor) === -1 && !neighbor.isVisited) { 
+                toBeVisitedOrder.push(neighbor); 
+            }
+        }
 
-function updateUnvisitedNeighbors(obstacle, labyrinth) {
-    const unvisitedNeighbors = getUnvisitedNeighbors(obstacle, labyrinth);
-    for (const neighbor of unvisitedNeighbors) {
-        neighbor.distance = obstacle.distance + 1;  // DISTANCE NOT NECESSARY
-        neighbor.previousObstacle = obstacle;
+        visitedObstaclesOrder.push(nextObstacle);
     }
 }
 
 function getUnvisitedNeighbors(obstacle, labyrinth) {
+
     const neighbors = [];
     const {row, col} = obstacle;
+    //  The IF statements create the DFS priorities respectively --> UP, RIGHT, DOWN, LEFT
     if (row > 0) neighbors.push(labyrinth[row - 1][col]);
     if (col > 0) neighbors.push(labyrinth[row][col - 1]);
     if (row < labyrinth.length - 1) neighbors.push(labyrinth[row + 1][col]);
     if (col < labyrinth[0].length - 1) neighbors.push(labyrinth[row][col + 1]);
-    return neighbors.filter(neighbor => !neighbor.isVisited);
-}
 
-function getAllObstacles(labyrinth) {
-    const obstacles = [];
-    for (const row of labyrinth) {
-        for (const obstacle of row) {
-            obstacles.push(obstacle);
-        }
+    const testNeighbors = neighbors.filter(neighbor => !neighbor.isVisited);
+    for (const neighbor of testNeighbors) {
+        console.log(neighbor);
+        
+        neighbor.previousObstacle = obstacle;
     }
-    return obstacles;
+    return neighbors;
 }
 
 export function getObstaclesShortestPathOrderRW(finishObstacle) {
     const obstaclesShortestPathOrder = [];
     let currentObstacle = finishObstacle;
     while (currentObstacle !== null) {
+        
         obstaclesShortestPathOrder.unshift(currentObstacle);
         currentObstacle = currentObstacle.previousObstacle;
-        console.log("Test");
     }
     return obstaclesShortestPathOrder;
 }
