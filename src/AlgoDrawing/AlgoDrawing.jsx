@@ -63,6 +63,7 @@ export default class AlgoDrawing extends Component {
             FINISH_OBSTACLE_ROW += valueChange;
             const labyrinth = getInitialLabyrinth();
             this.setState({labyrinth});
+            this.resetBoard();
         }
     }
 
@@ -173,7 +174,12 @@ export default class AlgoDrawing extends Component {
                     document.getElementById(`obstacle-${row}-${col}`).className = 'obstacle obstacle-empty';
                 }
 
-                
+                if (row === 0 & col === 0) {
+                    document.getElementById(`obstacle-${row}-${col}`).className = 'obstacle obstacle-start';
+                }
+                if (row === LABYRINTH_WIDTH - 1 & col === LABYRINTH_WIDTH - 1) {
+                    document.getElementById(`obstacle-${row}-${col}`).className = 'obstacle obstacle-finish';
+                }
                 // newLabyrinth[row][col].className = 'obstacle obstacle-empty';
             }
         }

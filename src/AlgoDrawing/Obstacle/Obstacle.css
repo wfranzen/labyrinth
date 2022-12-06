@@ -24,3 +24,7 @@
 .obstacle-backwards {
     background-color: blue;
 }
+
+.obstacle-empty {
+    background-color: white;
+}
