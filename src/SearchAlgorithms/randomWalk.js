@@ -7,10 +7,7 @@ export function randomWalk(labyrinth, startObstacle, finishObstacle) {
         shuffleOrder(unvisitedObstacles);
         const closestObstacle = unvisitedObstacles.shift();  // DISTANCE NOT NECESSARY
         if (closestObstacle.isWall) continue;
-        if (closestObstacle.distance === Infinity) {  // This statement keeps getting triggered
-            console.log('No solution possible.');
-            return visitedObstaclesOrder; 
-        }
+
         closestObstacle.isVisited = true;
         visitedObstaclesOrder.push(closestObstacle);
         if (closestObstacle === finishObstacle) return visitedObstaclesOrder;

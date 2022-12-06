@@ -6,10 +6,12 @@ import {randomWalk, getObstaclesShortestPathOrderRW} from '../SearchAlgorithms/r
 
 import './AlgoDrawing.css';
 
+var LABYRINTH_WIDTH = 5;
 const START_OBSTACLE_ROW = 0;
 const START_OBSTACLE_COL = 0;
-const FINISH_OBSTACLE_ROW = 13;
-const FINISH_OBSTACLE_COL = 13;
+var FINISH_OBSTACLE_ROW = LABYRINTH_WIDTH - 1;
+var FINISH_OBSTACLE_COL = LABYRINTH_WIDTH - 1;
+
 
 export default class AlgoDrawing extends Component {
 
@@ -22,37 +24,45 @@ export default class AlgoDrawing extends Component {
     }
 
     componentDidMount() {
+        
         const labyrinth = getInitialLabyrinth();
         this.setState({labyrinth});
     }
 
     handleMouseDown(row, col) {
+
         const newLabyrinth = getNewLabyrinthWithWallToggled(this.state.labyrinth, row, col);
         this.setState({
-            labyinth: newLabyrinth, 
+            labyrinth: newLabyrinth, 
             mouseIsPressed: true,
         });
     }
 
     handleMouseEnter(row, col) {
+
         if (!this.state.mouseIsPressed) return;
         const newLabyrinth = getNewLabyrinthWithWallToggled(this.state.labyrinth, row, col);
-        this.setState({labyinth: newLabyrinth});
+        this.setState({labyrinth: newLabyrinth});
     }
 
     handleMouseUp() {
+
         this.setState({mouseIsPressed: false});
     }
 
     animateBreadthFirst(visitedObstaclesOrder, obstaclesShortestPathOrder) {
+
         for (let i = 0; i <= visitedObstaclesOrder.length; i++) {
+
             if (i === visitedObstaclesOrder.length) {
+
                 setTimeout(() => {
                     this.animateShortestPath(obstaclesShortestPathOrder);
                 }, 20 * i);
                 return;
             }
             setTimeout(() => {
+
                 const obstacle = visitedObstaclesOrder[i];
                 document.getElementById(`obstacle-${obstacle.row}-${obstacle.col}`).className = 'obstacle obstacle-visited';
             }, 20 * i);
@@ -60,7 +70,9 @@ export default class AlgoDrawing extends Component {
     }
 
     animateShortestPath(obstaclesShortestPathOrder) {
+
         for (let i = 0; i < obstaclesShortestPathOrder.length; i++) {
+
             setTimeout(() => {
                 const obstacle = obstaclesShortestPathOrder[i];
                 document.getElementById(`obstacle-${obstacle.row}-${obstacle.col}`).className = 'obstacle obstacle-backwards';
@@ -69,6 +81,7 @@ export default class AlgoDrawing extends Component {
     }
 
     visualizeBreadthFirst() {
+
         const {labyrinth} = this.state;
         const startObstacle = labyrinth[START_OBSTACLE_ROW][START_OBSTACLE_COL];
         const finishObstacle = labyrinth[FINISH_OBSTACLE_ROW][FINISH_OBSTACLE_COL];
@@ -78,6 +91,7 @@ export default class AlgoDrawing extends Component {
     }
 
     visualizeDepthFirst() {
+
         const {labyrinth} = this.state;
         const startObstacle = labyrinth[START_OBSTACLE_ROW][START_OBSTACLE_COL];
         const finishObstacle = labyrinth[FINISH_OBSTACLE_ROW][FINISH_OBSTACLE_COL];
@@ -87,12 +101,22 @@ export default class AlgoDrawing extends Component {
     }
 
     visualizeRandomWalk() {
+
         const {labyrinth} = this.state;
         const startObstacle = labyrinth[START_OBSTACLE_ROW][START_OBSTACLE_COL];
         const finishObstacle = labyrinth[FINISH_OBSTACLE_ROW][FINISH_OBSTACLE_COL];
         const visitedObstaclesOrder = randomWalk(labyrinth, startObstacle, finishObstacle);
         const obstaclesShortestPathOrder = getObstaclesShortestPathOrderRW(finishObstacle);
         this.animateBreadthFirst(visitedObstaclesOrder, obstaclesShortestPathOrder);
+    }
+
+    handleSizeChange(valueChange) {
+
+        LABYRINTH_WIDTH = LABYRINTH_WIDTH + valueChange;
+        FINISH_OBSTACLE_COL += valueChange;
+        FINISH_OBSTACLE_ROW += valueChange;
+        const labyrinth = getInitialLabyrinth();
+        this.setState({labyrinth});
     }
 
     render() {
@@ -111,6 +135,12 @@ export default class AlgoDrawing extends Component {
                 </button>
                 <button onClick={() => this.visualizeRandomWalk()}>
                     Search Using Random Walk
+                </button>
+                <button onClick={() => this.handleSizeChange(1)}>
+                    Increase Size
+                </button>
+                <button onClick={() => this.handleSizeChange(-1)}>
+                    Reduce Size
                 </button>
                 <div className="labyrinth"> 
                     {labyrinth.map((row, rowIdx) => {
@@ -146,10 +176,13 @@ export default class AlgoDrawing extends Component {
 }
 
 const getInitialLabyrinth = () => {
+
     const labyrinth = [];
-    for (let row = 0; row < 15; row++) {
+    for (let row = 0; row < LABYRINTH_WIDTH; row++) {
+
         const currentRow = [];
-        for (let col = 0; col < 15; col++) {
+        for (let col = 0; col < LABYRINTH_WIDTH; col++) {
+
             currentRow.push(createObstacle(col, row));
         }
         labyrinth.push(currentRow);
@@ -158,6 +191,7 @@ const getInitialLabyrinth = () => {
 };
 
 const createObstacle = (col, row) => {
+
     return {
         col,
         row,
@@ -170,8 +204,9 @@ const createObstacle = (col, row) => {
     };
 };
 
-const getNewLabyrinthWithWallToggled = (labyinth, row, col) => {
-    const newLabyrinth = labyinth.slice();
+const getNewLabyrinthWithWallToggled = (labyrinth, row, col) => {
+
+    const newLabyrinth = labyrinth.slice();
     const obstacle = newLabyrinth[row][col];
     const newObstacle = {
         ...obstacle,
