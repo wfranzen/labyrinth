@@ -19,6 +19,11 @@ export function randomWalk(labyrinth, startObstacle, finishObstacle) {
 
         visitedObstaclesOrder.push(nextObstacle);
     }
+
+    if (toBeVisitedOrder.length === 0) {
+        window.alert("No possible solution.")
+        return visitedObstaclesOrder;
+    }
 }
 
 function getUnvisitedNeighbors(obstacle, labyrinth) {
@@ -33,7 +38,6 @@ function getUnvisitedNeighbors(obstacle, labyrinth) {
 
     const testNeighbors = neighbors.filter(neighbor => !neighbor.isVisited);
     for (const neighbor of testNeighbors) {
-        console.log(neighbor);
         
         neighbor.previousObstacle = obstacle;
     }
