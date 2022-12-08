@@ -192,7 +192,7 @@ export default class AlgoDrawing extends Component {
 
         return (
             <>
-                <form>
+                <form className="form-container">
                     <select id="searchAlgorithm">
                         <option value="1">Breadth-First</option>
                         <option value="2">Depth-First</option>
@@ -276,13 +276,8 @@ const createObstacle = (col, row) => {
 };
 
 const getNewLabyrinthWithWallToggled = (labyrinth, row, col) => {
-
     const newLabyrinth = labyrinth.slice();
     const obstacle = newLabyrinth[row][col];
-    const newObstacle = {
-        ...obstacle,
-        isWall: !obstacle.isWall,
-    };
-    newLabyrinth[row][col] = newObstacle;
+    newLabyrinth[row][col] = { ...obstacle, isWall: !obstacle.isWall };
     return newLabyrinth;
 };

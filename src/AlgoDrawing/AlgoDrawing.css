@@ -15,7 +15,7 @@
     padding: 12px 24px;
     border-radius: 3px;
     color: #ffffff;
-    background-color: #4285f4;
+    background-color: #606b7c;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12);
     transition: box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
     margin: 0 10px;
@@ -23,5 +23,26 @@
   .button:hover,
   .button:active {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.12);
-    background-color: #0077c2;
+    background-color: #303c43;
+  }
+
+  /* Form Container */
+.form-container {
+    max-width: 500px;
+    margin: 15px auto;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  /* Form Inputs */
+  .form-container input,
+  .form-container select,
+  .form-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid rgb(88, 77, 77);
+    border-radius: 3px;
+    font-size: 16px;
   }
