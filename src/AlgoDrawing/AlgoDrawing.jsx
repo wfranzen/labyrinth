@@ -201,16 +201,16 @@ export default class AlgoDrawing extends Component {
                         <option value="5">Random Jump</option>
                     </select>
                 </form>
-                <button onClick={() => this.runSelectedAlgorithm(document.getElementById("searchAlgorithm").value)}>
+                <button className="button" onClick={() => this.runSelectedAlgorithm(document.getElementById("searchAlgorithm").value)}>
                     Run Selected Algorithm
                 </button>
-                <button onClick={() => this.handleSizeChange(1)}>
+                <button className="button" onClick={() => this.handleSizeChange(1)}>
                     Increase Size
                 </button>
-                <button onClick={() => this.handleSizeChange(-1)}>
+                <button className="button" onClick={() => this.handleSizeChange(-1)}>
                     Reduce Size
                 </button>
-                <button onClick={() => this.resetBoard()}>
+                <button className="button" onClick={() => this.resetBoard()}>
                     Clear Board
                 </button>
                 <div className="labyrinth"> 
