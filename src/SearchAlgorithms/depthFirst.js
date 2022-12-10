@@ -4,15 +4,13 @@ export function depthFirst(labyrinth, startObstacle, finishObstacle) {
     const toBeVisitedOrder = [startObstacle];
     while (toBeVisitedOrder.length > 0) {
 
-        
         const nextObstacle = toBeVisitedOrder.pop();
         if (nextObstacle === finishObstacle) return visitedObstaclesOrder;
         if (nextObstacle.isWall) continue;
         nextObstacle.isVisited = true;
-        
         for (const neighbor of getUnvisitedNeighbors(nextObstacle, labyrinth)) {
-
             if (toBeVisitedOrder.indexOf(neighbor) === -1 && !neighbor.isVisited) { 
+
                 toBeVisitedOrder.push(neighbor); 
             }
         }
@@ -21,6 +19,7 @@ export function depthFirst(labyrinth, startObstacle, finishObstacle) {
     }
 
     if (toBeVisitedOrder.length === 0) {
+
         window.alert("No possible solution.")
         return visitedObstaclesOrder;
     }
@@ -45,6 +44,7 @@ function getUnvisitedNeighbors(obstacle, labyrinth) {
 }
 
 export function getObstaclesShortestPathOrderDFS(finishObstacle) {
+
     const obstaclesShortestPathOrder = [];
     let currentObstacle = finishObstacle;
     while (currentObstacle !== null) {

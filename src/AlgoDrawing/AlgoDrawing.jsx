@@ -54,10 +54,13 @@ export default class AlgoDrawing extends Component {
     handleSizeChange(valueChange) {
 
         if (LABYRINTH_WIDTH === 2 && valueChange === -1) {
+
             window.alert("Lower size limit reached.")
         } else if (LABYRINTH_WIDTH === 23 && valueChange === 1) {
+
             window.alert("Upper size limit reached.")
         } else if (LABYRINTH_WIDTH >= 2) {
+
             LABYRINTH_WIDTH = LABYRINTH_WIDTH + valueChange;
             FINISH_OBSTACLE_COL += valueChange;
             FINISH_OBSTACLE_ROW += valueChange;
@@ -70,7 +73,6 @@ export default class AlgoDrawing extends Component {
     animateAlgorithm(visitedObstaclesOrder, obstaclesShortestPathOrder) {
 
         for (let i = 0; i <= visitedObstaclesOrder.length; i++) {
-
             if (i === visitedObstaclesOrder.length) {
 
                 setTimeout(() => {
@@ -165,22 +167,23 @@ export default class AlgoDrawing extends Component {
 
         const newLabyrinth = this.state.labyrinth;
         for (let row = 0; row < LABYRINTH_WIDTH; row++) {
-
             for (let col = 0; col < LABYRINTH_WIDTH; col++) {
     
                 newLabyrinth[row][col].isVisited = false;
                 if (document.getElementById(`obstacle-${row}-${col}`).className === 'obstacle obstacle-backwards' 
-                || document.getElementById(`obstacle-${row}-${col}`).className === 'obstacle obstacle-visited') {
+                    || document.getElementById(`obstacle-${row}-${col}`).className === 'obstacle obstacle-visited') {
+
                     document.getElementById(`obstacle-${row}-${col}`).className = 'obstacle obstacle-empty';
                 }
 
                 if (row === 0 & col === 0) {
+
                     document.getElementById(`obstacle-${row}-${col}`).className = 'obstacle obstacle-start';
                 }
                 if (row === LABYRINTH_WIDTH - 1 & col === LABYRINTH_WIDTH - 1) {
+
                     document.getElementById(`obstacle-${row}-${col}`).className = 'obstacle obstacle-finish';
                 }
-                // newLabyrinth[row][col].className = 'obstacle obstacle-empty';
             }
         }
 
@@ -188,8 +191,8 @@ export default class AlgoDrawing extends Component {
     }
 
     render() {
-        const {labyrinth, mouseIsPressed} = this.state;
 
+        const {labyrinth, mouseIsPressed} = this.state;
         return (
             <>
                 <form className="form-container">
@@ -276,6 +279,7 @@ const createObstacle = (col, row) => {
 };
 
 const getNewLabyrinthWithWallToggled = (labyrinth, row, col) => {
+    
     const newLabyrinth = labyrinth.slice();
     const obstacle = newLabyrinth[row][col];
     newLabyrinth[row][col] = { ...obstacle, isWall: !obstacle.isWall };
